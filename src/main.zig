@@ -1,4 +1,5 @@
 const csr = @import("csr.zig");
+const debug = @import("debug.zig");
 const uart = @import("uart.zig").uart;
 // TODO: is there a cleaner way to do this? `index.zig` and `addPackagePath`?
 usingnamespace @import("trap.zig");
@@ -14,8 +15,10 @@ export var machine_stack align(16) = [_]u8{0} ** stack_size;
 extern fn machine_trap_vector() void;
 
 export fn start() noreturn {
+    // TODO
     csr.write("mscratch", @ptrToInt(&machine_stack) + stack_size);
 
+    // TODO
     csr.write("mtvec", @ptrToInt(machine_trap_vector));
 
     // Set the Machine Previous Privilege to S-mode
@@ -33,8 +36,7 @@ export fn start() noreturn {
 fn main() noreturn {
     // Initialize the UART
     uart.init();
-    const writer = uart.writer();
-    writer.print("Hello from {}!\n", .{"S-mode"}) catch unreachable;
+    debug.println("Hello from {}!", .{"S-mode"});
 
     // Raise an Illegal Instruction exception
     _ = csr.read("mstatus");

@@ -1,9 +1,8 @@
-const uart = @import("uart.zig").uart;
+const debug = @import("debug.zig");
 
 export fn machineTrapHandler(cause: usize) void {
-    const writer = uart.writer();
     // TODO: print an error message and halt on exceptions
-    writer.print("mcause = 0x{x}\n", .{cause}) catch unreachable;
+    debug.println("mcause = 0x{x}", .{cause});
 
     // TODO: recover from interrupts
     while (true) {
