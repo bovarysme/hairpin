@@ -12,7 +12,7 @@ export var stack align(16) = [_]u8{0} ** stack_size;
 // Stack used by the M-mode trap handler
 export var machine_stack align(16) = [_]u8{0} ** stack_size;
 
-extern fn machine_trap_vector() void;
+extern fn machine_trap_vector() noreturn;
 
 export fn start() noreturn {
     // TODO
