@@ -77,7 +77,7 @@ export fn machineTrapHandler(cause: usize, frame: Frame) void {
         return;
     }
 
-    debug.println("\x1b[97;44m", .{});
+    debug.println("\x1b[97;104m", .{});
     debug.println("{0} An exception has occurred :( {0}", .{"=" ** 16});
 
     // Print the exception name, code, and the privilege mode
