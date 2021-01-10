@@ -1,3 +1,4 @@
+pub const mie_mtie = 1 << 7;
 pub const mstatus_mpp_s = 1 << 11;
 
 pub fn read(comptime name: []const u8) usize {

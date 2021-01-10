@@ -1,3 +1,4 @@
+const clint = @import("clint.zig");
 const csr = @import("csr.zig");
 const debug = @import("debug.zig");
 const uart = @import("uart.zig").uart;
@@ -21,6 +22,10 @@ export fn start() noreturn {
     // TODO
     csr.write("mtvec", @ptrToInt(machine_trap_vector));
 
+    // Enable M-mode timer interrupts
+    csr.set("mie", csr.mie_mtie);
+    clint.setTimer(clint.default_delta);
+
     // Set the Machine Previous Privilege to S-mode
     csr.set("mstatus", csr.mstatus_mpp_s);
 
@@ -37,9 +42,6 @@ fn main() noreturn {
     // Initialize the UART
     uart.init();
     debug.println("Hello from {}!", .{"S-mode"});
-
-    // Raise an Illegal Instruction exception
-    _ = csr.read("mstatus");
 
     while (true) {
         asm volatile ("wfi");

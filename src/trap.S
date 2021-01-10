@@ -50,5 +50,39 @@ machine_trap_vector:
 	mv a1, sp
 	call machineTrapHandler
 
+	lw zero, 0*4(sp)
+	lw ra, 1*4(sp)
+	lw sp, 2*4(sp)
+	lw gp, 3*4(sp)
+	lw tp, 4*4(sp)
+	lw t0, 5*4(sp)
+	lw t1, 6*4(sp)
+	lw t2, 7*4(sp)
+	lw s0, 8*4(sp)
+	lw s1, 9*4(sp)
+	lw a0, 10*4(sp)
+	lw a1, 11*4(sp)
+	lw a2, 12*4(sp)
+	lw a3, 13*4(sp)
+	lw a4, 14*4(sp)
+	lw a5, 15*4(sp)
+	lw a6, 16*4(sp)
+	lw a7, 17*4(sp)
+	lw s2, 18*4(sp)
+	lw s3, 19*4(sp)
+	lw s4, 20*4(sp)
+	lw s5, 21*4(sp)
+	lw s6, 22*4(sp)
+	lw s7, 23*4(sp)
+	lw s8, 24*4(sp)
+	lw s9, 25*4(sp)
+	lw s10, 26*4(sp)
+	lw s11, 27*4(sp)
+	lw t3, 28*4(sp)
+	lw t4, 29*4(sp)
+	lw t5, 30*4(sp)
+	lw t6, 31*4(sp)
+
+	addi sp, sp, 35*4
 	csrrw sp, mscratch, sp
 	mret

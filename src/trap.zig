@@ -1,3 +1,4 @@
+const clint = @import("clint.zig");
 const debug = @import("debug.zig");
 
 const exceptions = [_][]const u8{
@@ -61,7 +62,9 @@ const registers = [_][]const u8{
     "t6",
 };
 
+// TODO: move to `csr.zig` and prefix with `mcause`?
 const interrupt_mask = 1 << 31;
+const exception_code_mask = (1 << 31) - 1;
 
 const Frame = packed struct {
     registers: [32]usize,
@@ -71,9 +74,35 @@ const Frame = packed struct {
     mtval: usize,
 };
 
+const Interrupt = enum(usize) {
+    user_software = 0,
+    supervisor_software = 1,
+    machine_software = 3,
+
+    user_timer = 4,
+    supervisor_timer = 5,
+    machine_timer = 7,
+
+    user_external = 8,
+    supervisor_external = 9,
+    machine_external = 11,
+
+    _,
+};
+
 export fn machineTrapHandler(cause: usize, frame: Frame) void {
     if (cause & interrupt_mask == interrupt_mask) {
-        // TODO: handle interrupts
+        const code = @intToEnum(Interrupt, cause & exception_code_mask);
+        switch (code) {
+            .machine_timer => {
+                debug.println("M-mode timer interrupt!", .{});
+                clint.setTimer(clint.default_delta);
+            },
+            else => {
+                debug.println("Unhandled interrupt", .{});
+            },
+        }
+
         return;
     }
 
